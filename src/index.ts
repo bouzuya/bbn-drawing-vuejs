@@ -21,9 +21,18 @@ const main = () => {
   const storage = new CookieStorage();
   const ratings = loadRatings(storage);
   const week = '2016-W31';
+  type WorkComponent = { rating: number; };
+  const data: WorkComponent = {
+    rating: typeof ratings[week] === 'undefined' ? 0 : ratings[week]
+  };
   const work1 = new Vue({
     el: `.work-${week}`,
-    data: { rating: typeof ratings[week] === 'undefined' ? 0 : ratings[week] }
+    data,
+    methods: {
+      increment(this: WorkComponent): void {
+        this.rating += 1;
+      }
+    }
   });
   console.log(work1);
   saveRatings(storage, ratings);
