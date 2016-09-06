@@ -29,6 +29,9 @@ const main = () => {
     el: `.work-${week}`,
     data,
     methods: {
+      decrement(this: WorkComponent): void {
+        this.rating -= 1;
+      },
       increment(this: WorkComponent): void {
         this.rating += 1;
       }
