@@ -41,11 +41,16 @@ const main = () => {
   saveRatings(storage, ratings);
 };
 
-if (document.readyState === 'complete') {
-  window.setTimeout(() => main());
-} else {
-  document.addEventListener('DOMContentLoaded', function listener() {
-    document.removeEventListener("DOMContentLoaded", listener);
-    main();
-  });
-}
+const ready = (callback: Function): void => {
+  if (typeof document === 'undefined') return void callback();
+  if (document.readyState === 'complete') {
+    setTimeout(() => callback());
+  } else {
+    document.addEventListener('DOMContentLoaded', function listener() {
+      document.removeEventListener("DOMContentLoaded", listener);
+      callback();
+    });
+  }
+};
+
+ready(main);
