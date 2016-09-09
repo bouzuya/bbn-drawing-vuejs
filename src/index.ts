@@ -39,6 +39,21 @@ const toRatings = (works: Work[]): Ratings => {
   }, <Ratings>{});
 };
 
+const mountNewWorkVM = (state: Work) => {
+  return new Vue({
+    el: `.work-${state.week}`,
+    data: { state },
+    methods: {
+      decrement(this: { state: Work; }): void {
+        this.state.rating -= 1;
+      },
+      increment(this: { state: Work; }): void {
+        this.state.rating += 1;
+      }
+    }
+  });
+};
+
 const main = () => {
   const storage = new CookieStorage();
   const ratings = loadRatings(storage);
@@ -47,23 +62,7 @@ const main = () => {
     '2016-W32'
   ];
   const works = toWorks(weeks, ratings);
-  works.map(({ week, rating }) => {
-    type WorkComponent = { rating: number; };
-    const data: WorkComponent = { rating };
-    const work1 = new Vue({
-      el: `.work-${week}`,
-      data,
-      methods: {
-        decrement(this: WorkComponent): void {
-          this.rating -= 1;
-        },
-        increment(this: WorkComponent): void {
-          this.rating += 1;
-        }
-      }
-    });
-    console.log(work1);
-  });
+  works.map((work) => mountNewWorkVM(work)); // TODO: vms
   saveRatings(storage, toRatings(works));
 };
 
