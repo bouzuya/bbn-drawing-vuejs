@@ -1,9 +1,11 @@
 import * as Vue from 'vue';
 import { CookieStorage } from 'cookie-storage';
+import { EventEmitter } from 'events';
 
 type Ratings = {
   [week: string]: number;
 };
+
 type Work = {
   rating: number;
   week: string;
@@ -39,6 +41,75 @@ const toRatings = (works: Work[]): Ratings => {
   }, <Ratings>{});
 };
 
+// message
+
+type Message = Command | Event;
+
+type Command = DecrementCommand | IncrementCommand;
+
+interface DecrementCommand {
+  type: 'decrement';
+  week: string;
+}
+
+interface IncrementCommand {
+  type: 'increment';
+  week: string;
+}
+
+type Event = UpdatedEvent;
+
+interface UpdatedEvent {
+  type: 'updated';
+  state: { works: Work[]; };
+}
+
+type Listener = (event: Event) => void;
+type Handler = (message: Message) => Message | undefined;
+type Publish = (command: Command) => void;
+type Subscribe = (listener: Listener) => Unsubscribe;
+type Unsubscribe = () => void;
+type Handle = (handler: Handler) => Unhandle;
+type Unhandle = () => void;
+type MessageBus = {
+  publish: Publish; subscribe: Subscribe; handle: Handle;
+};
+
+const isCommand = (message: Message): message is Command => {
+  return message.type === 'decrement' || message.type === 'increment';
+};
+
+const isEvent = (message: Message): message is Event => {
+  return !isCommand(message);
+};
+
+const newMessageBus = (): MessageBus => {
+  const subject = new EventEmitter();
+  const handle = (handler: Handler): Unhandle => {
+    const l = (message: Message) => {
+      // TODO: async
+      const result = handler(message);
+      if (typeof result !== 'undefined') {
+        // TODO: nextTick
+        setTimeout(() => void subject.emit('data', result));
+      }
+    };
+    subject.on('data', l);
+    return () => void subject.removeListener('data', l);
+  };
+  const publish: Publish = (command: Command): void => {
+    subject.emit('data', command);
+  };
+  const subscribe: Subscribe = (
+    listener: (event: Event) => void
+  ): Unsubscribe => {
+    return handle((message) => {
+      return isEvent(message) ? void listener(message) : void 0;
+    });
+  };
+  return { publish, subscribe, handle };
+};
+
 const mountNewWorkVM = (state: Work) => {
   return new Vue({
     el: `.work-${state.week}`,
@@ -62,6 +133,7 @@ const main = () => {
     '2016-W32'
   ];
   const works = toWorks(weeks, ratings);
+  void newMessageBus(); // TODO
   works.map((work) => mountNewWorkVM(work)); // TODO: vms
   saveRatings(storage, toRatings(works));
 };
