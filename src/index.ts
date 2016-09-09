@@ -42,7 +42,10 @@ const toRatings = (works: Work[]): Ratings => {
 const main = () => {
   const storage = new CookieStorage();
   const ratings = loadRatings(storage);
-  const weeks = ['2016-W31'];
+  const weeks = [
+    '2016-W31',
+    '2016-W32'
+  ];
   const works = toWorks(weeks, ratings);
   works.map(({ week, rating }) => {
     type WorkComponent = { rating: number; };
