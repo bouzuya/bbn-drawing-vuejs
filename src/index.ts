@@ -1,9 +1,8 @@
 import * as Vue from 'vue';
-import { CookieStorage } from 'cookie-storage';
 import { diff, applyChange } from 'deep-diff';
 import { EventEmitter } from 'events';
 import { Work } from './type';
-import { loadRatings, saveRatings, toRatings, toWorks } from './store';
+import { newStorage } from './store';
 
 // message
 
@@ -178,17 +177,16 @@ const mountNewWorkVM = (state: Work, pub: Publish, sub: Function) => {
 };
 
 const main = () => {
-  const storage = new CookieStorage();
-  const ratings = loadRatings(storage);
+  const storage = newStorage();
   const weeks = [
     '2016-W31',
     '2016-W32'
   ];
-  const works = toWorks(weeks, ratings);
+  const works = storage.load(weeks);
   const { handle, publish, subscribe } = newMessageBus();
   void newModel(handle, { works }); // TODO: finalize
   works.map((work) => mountNewWorkVM(work, publish, subscribe)); // TODO: vms
-  saveRatings(storage, toRatings(works));
+  storage.save(works);
 };
 
 const ready = (callback: Function): void => {

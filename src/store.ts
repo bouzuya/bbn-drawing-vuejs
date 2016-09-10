@@ -1,6 +1,11 @@
 import { Ratings, Work } from './type';
 import { CookieStorage } from 'cookie-storage';
 
+export interface Storage {
+  load(weeks: string[]): Work[];
+  save(works: Work[]): void;
+}
+
 const loadRatings = (storage: CookieStorage): Ratings => {
   const ratingsJsonOrNull = storage.getItem('ratings');
   const ratingsJson = ratingsJsonOrNull === null
@@ -31,4 +36,19 @@ const toWorks = (weeks: string[], ratings: Ratings): Work[] => {
   return works;
 };
 
-export { loadRatings, saveRatings, toRatings, toWorks };
+const newStorage = (): Storage => {
+  const storage = new CookieStorage();
+  return {
+    load(weeks: string[]): Work[] {
+      const ratings = loadRatings(storage);
+      const works = toWorks(weeks, ratings);
+      return works;
+    },
+    save(works: Work[]): void {
+      const ratings = toRatings(works);
+      saveRatings(storage, ratings);
+    }
+  };
+};
+
+export { newStorage };
