@@ -2,15 +2,7 @@ import * as Vue from 'vue';
 import { CookieStorage } from 'cookie-storage';
 import { diff, applyChange } from 'deep-diff';
 import { EventEmitter } from 'events';
-
-type Ratings = {
-  [week: string]: number;
-};
-
-type Work = {
-  rating: number;
-  week: string;
-};
+import { Ratings, Work } from './type';
 
 // store
 
