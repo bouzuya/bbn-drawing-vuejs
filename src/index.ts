@@ -1,7 +1,16 @@
 import { newStorage } from './store';
-import { newMessageBus } from './message';
+import { checkedEvent, newMessageBus } from './message';
 import { newModel } from './model';
 import { newView } from './view';
+import { fetch } from './globals';
+
+const fetchDrawingPosts = (): Promise<any> => {
+  return fetch('http://blog.bouzuya.net/posts.json')
+    .then((response) => response.json())
+    .then((posts: { tags: string[]; }[]) => {
+      return posts.filter(({ tags }) => tags.some((tag) => tag === 'drawing'));
+    });
+};
 
 const main = () => {
   const storage = newStorage();
@@ -22,6 +31,21 @@ const main = () => {
     }
     return void 0;
   });
+
+  void bus.handle((message) => {
+    if (message.type === 'check') {
+      fetchDrawingPosts()
+        .then((posts) => {
+          console.log(posts); // for DEBUG
+          if (weeks.length < posts.length) {
+            const isValid = weeks.length === posts.length;
+            bus.publish(checkedEvent(isValid));
+          }
+        });
+    }
+    return void 0;
+  });
+  bus.publish({ type: 'check' });
 };
 
 const ready = (callback: Function): void => {
