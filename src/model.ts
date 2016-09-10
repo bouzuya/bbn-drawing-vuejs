@@ -3,9 +3,8 @@ import {
   DecrementCommand, IncrementCommand, UpdatedEvent,
   Handle
 } from './message';
-import { Work } from './type';
+import { State } from './type';
 
-type State = { works: Work[]; };
 
 const decrement = (state: State, week: string): State => {
   const { works } = state;

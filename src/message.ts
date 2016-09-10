@@ -1,4 +1,4 @@
-import { Work } from './type';
+import { State } from './type';
 import { newMessageBus as newBus } from './bus';
 
 export type Message = Command | Event;
@@ -19,7 +19,7 @@ export type Event = UpdatedEvent;
 
 export interface UpdatedEvent {
   type: 'updated';
-  state: { works: Work[]; };
+  state: State;
 }
 
 export type Listener = (event: Event) => void;

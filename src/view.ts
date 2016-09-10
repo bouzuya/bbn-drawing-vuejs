@@ -1,6 +1,6 @@
 import * as Vue from 'vue';
 import { diff, applyChange } from 'deep-diff';
-import { Work } from './type';
+import { State, Work } from './type';
 import {
   MessageBus,
   Event,
@@ -12,7 +12,6 @@ import {
   DecrementCommand, IncrementCommand, UpdatedEvent,
 } from './message';
 
-type State = { works: Work[]; };
 
 const merge = (target: any, source: any): void => {
   const patches = diff(target, source);

@@ -10,9 +10,10 @@ const main = () => {
     '2016-W32'
   ];
   const works = storage.load(weeks);
+  const state = { works };
   const bus = newMessageBus();
-  void newModel(bus.handle, { works }); // TODO: finalize
-  void newView(bus, { works }); // TODO: finalize
+  void newModel(bus.handle, state); // TODO: finalize
+  void newView(bus, state); // TODO: finalize
   // auto save. TODO: finalize
   void bus.handle((message) => {
     if (message.type === 'updated') {
