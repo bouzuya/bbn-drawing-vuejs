@@ -2,6 +2,7 @@ import * as Vue from 'vue';
 import { diff, applyChange } from 'deep-diff';
 import { Work } from './type';
 import {
+  MessageBus,
   Event,
   Publish,
   decrementCommand,
@@ -10,6 +11,8 @@ import {
   // workaround for warning
   DecrementCommand, IncrementCommand, UpdatedEvent,
 } from './message';
+
+type State = { works: Work[]; };
 
 const merge = (target: any, source: any): void => {
   const patches = diff(target, source);
@@ -44,7 +47,13 @@ const mountNewWorkVM = (state: Work, pub: Publish, sub: Function) => {
   });
 };
 
-export { mountNewWorkVM };
+const newView = (bus: MessageBus, initialState: State): any => {
+  const { publish, subscribe } = bus;
+  const { works } = initialState;
+  works.map((work) => mountNewWorkVM(work, publish, subscribe)); // TODO: vms
+};
+
+export { newView };
 
 // workaround for warning
 export { DecrementCommand, IncrementCommand, UpdatedEvent };

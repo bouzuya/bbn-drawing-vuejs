@@ -1,7 +1,7 @@
 import { newStorage } from './store';
 import { newMessageBus } from './message';
 import { newModel } from './model';
-import { mountNewWorkVM } from './view';
+import { newView } from './view';
 
 const main = () => {
   const storage = newStorage();
@@ -10,9 +10,10 @@ const main = () => {
     '2016-W32'
   ];
   const works = storage.load(weeks);
-  const { handle, publish, subscribe } = newMessageBus();
+  const bus = newMessageBus();
+  const { handle } = bus;
   void newModel(handle, { works }); // TODO: finalize
-  works.map((work) => mountNewWorkVM(work, publish, subscribe)); // TODO: vms
+  void newView(bus, { works }); // TODO: finalize
   storage.save(works);
 };
 
