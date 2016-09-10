@@ -1,3 +1,69 @@
 body {
   background-color: #eee;
 }
+
+ul {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+li {
+  position: relative;
+  flex: 1;
+  list-style-type: none;
+  margin-top: 10vh;
+  height: 320px;
+  width: 30vw;
+  min-width: 320px;
+  // border: 1px solid #f00;
+}
+
+.body {
+  width: 90vw;
+  margin: 0 auto;
+  color: #333;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.week {
+  display: block;
+  font-size: 120%;
+  font-weight: bold;
+}
+
+.image {
+  display: block;
+  width: 200px;
+  height: 200px;
+  padding: 25px;
+  margin: 0 auto;
+}
+
+.rating-up, .rating-down {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 32px;
+  height: 32px;
+  margin: 4px;
+  background-color: #eee;
+  border: 1px solid #333;
+}
+
+.rating-up {
+  left: 0;
+}
+
+.rating-down {
+  left: 40px;
+}
+
+.rating {
+  position: absolute;
+  bottom: 0;
+  left: 80px;
+  height: 40px;
+  line-height: 40px;
+}
