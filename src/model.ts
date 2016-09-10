@@ -1,6 +1,7 @@
 import {
   // workaround for warning
   DecrementCommand, IncrementCommand, UpdatedEvent,
+  updatedEvent,
   Handle
 } from './message';
 import { State } from './type';
@@ -35,10 +36,10 @@ const newModel = (handle: Handle, initialState: State): any => {
   const removeCommandHandler = handle((message) => {
     if (message.type === 'decrement') {
       const newState = decrement(state, message.week);
-      return { type: 'updated', state: newState };
+      return updatedEvent(newState);
     } else if (message.type === 'increment') {
       const newState = increment(state, message.week);
-      return { type: 'updated', state: newState };
+      return updatedEvent(newState);
     } else {
       return void 0;
     }

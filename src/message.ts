@@ -45,6 +45,10 @@ const isCommand = (message: Message): message is Command => {
   return message.type === 'decrement' || message.type === 'increment';
 };
 
+const updatedEvent = (state: State): UpdatedEvent => {
+  return { type: 'updated', state };
+};
+
 const isEvent = (message: Message): message is Event => {
   return !isCommand(message);
 };
@@ -73,4 +77,7 @@ const newMessageBus = (): MessageBus => {
   return { publish, subscribe, handle };
 };
 
-export { decrementCommand, incrementCommand, newMessageBus };
+export {
+  decrementCommand, incrementCommand, newMessageBus,
+  updatedEvent
+};
