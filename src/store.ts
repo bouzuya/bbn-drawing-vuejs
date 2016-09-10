@@ -1,9 +1,13 @@
-import { Ratings, Work } from './type';
+import { Work } from './type';
 import { CookieStorage } from 'cookie-storage';
 
 export interface Storage {
   load(weeks: string[]): Work[];
   save(works: Work[]): void;
+}
+
+interface Ratings {
+  [week: string]: number;
 }
 
 const loadRatings = (storage: CookieStorage): Ratings => {
