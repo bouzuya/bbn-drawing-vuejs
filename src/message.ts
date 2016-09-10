@@ -24,7 +24,7 @@ export interface UpdatedEvent {
 
 export type Listener = (event: Event) => void;
 export type Handler = (message: Message) => Message | undefined;
-export type Publish = (command: Command) => void;
+export type Publish = (message: Message) => void;
 export type Subscribe = (listener: Listener) => Unsubscribe;
 export type Unsubscribe = () => void;
 export type Handle = (handler: Handler) => Unhandle;
@@ -64,8 +64,8 @@ const newMessageBus = (): MessageBus => {
       }
     });
   };
-  const publish: Publish = (command: Command): void => {
-    bus.publish(command);
+  const publish: Publish = (message: Message): void => {
+    bus.publish(message);
   };
   const subscribe: Subscribe = (
     listener: (event: Event) => void
