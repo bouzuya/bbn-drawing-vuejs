@@ -1,4 +1,4 @@
-# drawing-vuejs
+# bbn-drawing-vuejs
 
 TypeScript project template for npm package.
 
@@ -8,8 +8,8 @@ blog.bouzuya.net drawing tag & vue.js
 
 [![Travis CI][travis-ci-badge]][travis-ci]
 
-[travis-ci-badge]: https://img.shields.io/travis/bouzuya/drawing-vuejs.svg
-[travis-ci]: https://travis-ci.org/bouzuya/drawing-vuejs
+[travis-ci-badge]: https://img.shields.io/travis/bouzuya/bbn-drawing-vuejs.svg
+[travis-ci]: https://travis-ci.org/bouzuya/bbn-drawing-vuejs
 
 ## License
 

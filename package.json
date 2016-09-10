@@ -1,5 +1,5 @@
 {
-  "name": "drawing-vuejs",
+  "name": "bbn-drawing-vuejs",
   "description": "blog.bouzuya.net drawing tag & vue.js",
   "version": "0.0.0",
   "author": {
@@ -19,7 +19,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/bouzuya/drawing-vuejs/issues"
+    "url": "https://github.com/bouzuya/bbn-drawing-vuejs/issues"
   },
   "dependencies": {
     "cookie-storage": "2.0.2",
@@ -52,13 +52,13 @@
     "webpack": "1.13.2",
     "webpack-dev-server": "1.15.1"
   },
-  "homepage": "https://github.com/bouzuya/drawing-vuejs#readme",
+  "homepage": "https://github.com/bouzuya/bbn-drawing-vuejs#readme",
   "keywords": [],
   "license": "MIT",
   "main": "lib/index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/bouzuya/drawing-vuejs"
+    "url": "https://github.com/bouzuya/bbn-drawing-vuejs"
   },
   "scripts": {
     "build": "npm-run-all -s 'build:ts' 'build:es2015' -p 'build:less' 'copy:*'",
