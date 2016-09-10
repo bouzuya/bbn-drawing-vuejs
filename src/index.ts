@@ -11,10 +11,16 @@ const main = () => {
   ];
   const works = storage.load(weeks);
   const bus = newMessageBus();
-  const { handle } = bus;
-  void newModel(handle, { works }); // TODO: finalize
+  void newModel(bus.handle, { works }); // TODO: finalize
   void newView(bus, { works }); // TODO: finalize
-  storage.save(works);
+  // auto save. TODO: finalize
+  void bus.handle((message) => {
+    if (message.type === 'updated') {
+      const works = message.state.works;
+      storage.save(works);
+    }
+    return void 0;
+  });
 };
 
 const ready = (callback: Function): void => {
