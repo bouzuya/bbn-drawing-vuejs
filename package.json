@@ -23,6 +23,7 @@
   },
   "dependencies": {
     "cookie-storage": "2.0.2",
+    "deep-diff": "0.3.4",
     "vue": "1.0.26"
   },
   "devDependencies": {
