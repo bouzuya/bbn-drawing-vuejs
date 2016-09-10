@@ -1,5 +1,5 @@
-import { EventEmitter } from 'events';
 import { Work } from './type';
+import { newMessageBus as newBus } from './bus';
 
 export type Message = Command | Event;
 
@@ -50,21 +50,18 @@ const isEvent = (message: Message): message is Event => {
 };
 
 const newMessageBus = (): MessageBus => {
-  const subject = new EventEmitter();
+  const bus = newBus();
   const handle = (handler: Handler): Unhandle => {
-    const l = (message: Message) => {
+    return bus.subscribe((message) => {
       // TODO: async
-      const result = handler(message);
+      const result = handler(<Message>message);
       if (typeof result !== 'undefined') {
-        // TODO: nextTick
-        setTimeout(() => void subject.emit('data', result));
+        bus.publish(result);
       }
-    };
-    subject.on('data', l);
-    return () => void subject.removeListener('data', l);
+    });
   };
   const publish: Publish = (command: Command): void => {
-    subject.emit('data', command);
+    bus.publish(command);
   };
   const subscribe: Subscribe = (
     listener: (event: Event) => void
