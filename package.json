@@ -63,7 +63,7 @@
     "url": "https://github.com/bouzuya/bbn-drawing-vuejs"
   },
   "scripts": {
-    "build": "npm-run-all -s 'build:ts' 'build:es2015' -p 'build:less' 'copy:*'",
+    "build": "npm-run-all -s 'build:ts' 'build:es2015' -p 'build:html' 'build:less' 'copy:*'",
     "build:bundle": "webpack",
     "build:es2015": "babel --out-dir .tmp/es5/ .tmp/es2015/",
     "build:html": "cpx 'src/**/*.html' './public/'",
