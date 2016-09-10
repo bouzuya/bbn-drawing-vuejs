@@ -46,10 +46,30 @@ const mountNewWorkVM = (state: Work, pub: Publish, sub: Function) => {
   });
 };
 
+const mountChecker = (state: boolean, sub: Function) => {
+  return new Vue({
+    el: '.checker',
+    data: { state },
+    ready(this: { unsubscribe: Function; state: boolean; }): void {
+      this.unsubscribe = sub((event: Event) => {
+        if (event.type === 'updated') {
+          if (this.state !== event.state.isValid) {
+            this.state = event.state.isValid;
+          }
+        }
+      });
+    },
+    destroyed(this: { unsubscribe: Function; }): void {
+      if (typeof this.unsubscribe !== 'undefined') this.unsubscribe();
+    }
+  });
+};
+
 const newView = (bus: MessageBus, initialState: State): any => {
   const { publish, subscribe } = bus;
-  const { works } = initialState;
+  const { works, isValid } = initialState;
   works.map((work) => mountNewWorkVM(work, publish, subscribe)); // TODO: vms
+  mountChecker(isValid, subscribe);
 };
 
 export { newView };
