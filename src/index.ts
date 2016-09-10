@@ -10,7 +10,7 @@ const main = () => {
     '2016-W32'
   ];
   const works = storage.load(weeks);
-  const state = { works };
+  const state = { works, isValid: true };
   const bus = newMessageBus();
   void newModel(bus.handle, state); // TODO: finalize
   void newView(bus, state); // TODO: finalize

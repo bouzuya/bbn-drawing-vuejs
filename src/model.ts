@@ -6,6 +6,9 @@ import {
 } from './message';
 import { State } from './type';
 
+const check = (state: State, isValid: boolean): State => {
+  return Object.assign({}, state, { isValid });
+};
 
 const decrement = (state: State, week: string): State => {
   const { works } = state;
@@ -34,7 +37,10 @@ const newModel = (handle: Handle, initialState: State): any => {
   let state = initialState;
 
   const removeCommandHandler = handle((message) => {
-    if (message.type === 'decrement') {
+    if (message.type === 'checked') {
+      const newState = check(state, message.isValid);
+      return updatedEvent(newState);
+    } else if (message.type === 'decrement') {
       const newState = decrement(state, message.week);
       return updatedEvent(newState);
     } else if (message.type === 'increment') {

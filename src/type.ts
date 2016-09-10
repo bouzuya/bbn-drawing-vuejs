@@ -1,4 +1,5 @@
 export interface State {
+  isValid: boolean;
   works: Work[];
 }
 
