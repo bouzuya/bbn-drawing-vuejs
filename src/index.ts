@@ -1,85 +1,15 @@
 import * as Vue from 'vue';
 import { diff, applyChange } from 'deep-diff';
-import { EventEmitter } from 'events';
 import { Work } from './type';
 import { newStorage } from './store';
-
-// message
-
-type Message = Command | Event;
-
-type Command = DecrementCommand | IncrementCommand;
-
-interface DecrementCommand {
-  type: 'decrement';
-  week: string;
-}
-
-interface IncrementCommand {
-  type: 'increment';
-  week: string;
-}
-
-type Event = UpdatedEvent;
-
-interface UpdatedEvent {
-  type: 'updated';
-  state: { works: Work[]; };
-}
-
-type Listener = (event: Event) => void;
-type Handler = (message: Message) => Message | undefined;
-type Publish = (command: Command) => void;
-type Subscribe = (listener: Listener) => Unsubscribe;
-type Unsubscribe = () => void;
-type Handle = (handler: Handler) => Unhandle;
-type Unhandle = () => void;
-type MessageBus = {
-  publish: Publish; subscribe: Subscribe; handle: Handle;
-};
-
-const decrementCommand = (week: string): DecrementCommand => {
-  return { type: 'decrement', week };
-};
-
-const incrementCommand = (week: string): IncrementCommand => {
-  return { type: 'increment', week };
-};
-
-const isCommand = (message: Message): message is Command => {
-  return message.type === 'decrement' || message.type === 'increment';
-};
-
-const isEvent = (message: Message): message is Event => {
-  return !isCommand(message);
-};
-
-const newMessageBus = (): MessageBus => {
-  const subject = new EventEmitter();
-  const handle = (handler: Handler): Unhandle => {
-    const l = (message: Message) => {
-      // TODO: async
-      const result = handler(message);
-      if (typeof result !== 'undefined') {
-        // TODO: nextTick
-        setTimeout(() => void subject.emit('data', result));
-      }
-    };
-    subject.on('data', l);
-    return () => void subject.removeListener('data', l);
-  };
-  const publish: Publish = (command: Command): void => {
-    subject.emit('data', command);
-  };
-  const subscribe: Subscribe = (
-    listener: (event: Event) => void
-  ): Unsubscribe => {
-    return handle((message) => {
-      return isEvent(message) ? void listener(message) : void 0;
-    });
-  };
-  return { publish, subscribe, handle };
-};
+import {
+  Event,
+  Handle,
+  Publish,
+  decrementCommand,
+  incrementCommand,
+  newMessageBus
+} from './message';
 
 // model
 
