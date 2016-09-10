@@ -9,9 +9,9 @@ import {
   incrementCommand,
 
   // workaround for warning
-  DecrementCommand, IncrementCommand, UpdatedEvent,
+  CheckCommand, DecrementCommand, IncrementCommand,
+  CheckedEvent, UpdatedEvent,
 } from './message';
-
 
 const merge = (target: any, source: any): void => {
   const patches = diff(target, source);
@@ -55,4 +55,7 @@ const newView = (bus: MessageBus, initialState: State): any => {
 export { newView };
 
 // workaround for warning
-export { DecrementCommand, IncrementCommand, UpdatedEvent };
+export {
+  CheckCommand, DecrementCommand, IncrementCommand,
+  CheckedEvent, UpdatedEvent
+};

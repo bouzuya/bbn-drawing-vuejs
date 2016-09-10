@@ -1,7 +1,7 @@
 import {
   // workaround for warning
-  DecrementCommand, IncrementCommand, UpdatedEvent,
-  updatedEvent,
+  CheckCommand, DecrementCommand, IncrementCommand,
+  CheckedEvent, UpdatedEvent, updatedEvent,
   Handle
 } from './message';
 import { State } from './type';
@@ -67,4 +67,7 @@ const newModel = (handle: Handle, initialState: State): any => {
 export { newModel };
 
 // workaround for warning
-export { DecrementCommand, IncrementCommand, UpdatedEvent };
+export {
+  CheckCommand, DecrementCommand, IncrementCommand,
+  CheckedEvent, UpdatedEvent
+};

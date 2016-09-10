@@ -3,7 +3,11 @@ import { newMessageBus as newBus } from './bus';
 
 export type Message = Command | Event;
 
-export type Command = DecrementCommand | IncrementCommand;
+export type Command = CheckCommand | DecrementCommand | IncrementCommand;
+
+export interface CheckCommand {
+  type: 'check';
+}
 
 export interface DecrementCommand {
   type: 'decrement';
@@ -15,7 +19,12 @@ export interface IncrementCommand {
   week: string;
 }
 
-export type Event = UpdatedEvent;
+export type Event = CheckedEvent | UpdatedEvent;
+
+export interface CheckedEvent {
+  type: 'checked';
+  isValid: boolean;
+}
 
 export interface UpdatedEvent {
   type: 'updated';
@@ -33,6 +42,10 @@ export type MessageBus = {
   publish: Publish; subscribe: Subscribe; handle: Handle;
 };
 
+const checkCommand = (): CheckCommand => {
+  return { type: 'check' };
+};
+
 const decrementCommand = (week: string): DecrementCommand => {
   return { type: 'decrement', week };
 };
@@ -42,7 +55,13 @@ const incrementCommand = (week: string): IncrementCommand => {
 };
 
 const isCommand = (message: Message): message is Command => {
-  return message.type === 'decrement' || message.type === 'increment';
+  return message.type === 'check' ||
+    message.type === 'decrement' ||
+    message.type === 'increment';
+};
+
+const checkedEvent = (isValid: boolean): CheckedEvent => {
+  return { type: 'checked', isValid };
 };
 
 const updatedEvent = (state: State): UpdatedEvent => {
@@ -78,6 +97,7 @@ const newMessageBus = (): MessageBus => {
 };
 
 export {
-  decrementCommand, incrementCommand, newMessageBus,
-  updatedEvent
+  newMessageBus,
+  checkCommand, decrementCommand, incrementCommand,
+  checkedEvent, updatedEvent
 };
