@@ -23,7 +23,8 @@ const main = () => {
     '2016-W36',
     '2016-W37',
     '2016-W38',
-    '2016-W39'
+    '2016-W39',
+    '2016-W40'
   ];
   const works = storage.load(weeks);
   const state = { works, isValid: true };
